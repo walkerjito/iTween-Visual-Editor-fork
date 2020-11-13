@@ -11,7 +11,8 @@ public class iTweenPathEditor : Editor
 	GUIStyle style = new GUIStyle();
 	public static int count = 0;
 	
-	void OnEnable(){
+	void OnEnable()
+	{
 		//i like bold handle labels since I'm getting old:
 		style.fontStyle = FontStyle.Bold;
 		style.normal.textColor = Color.white;
@@ -25,7 +26,8 @@ public class iTweenPathEditor : Editor
 		}
 	}
 	
-	public override void OnInspectorGUI(){		
+	public override void OnInspectorGUI()
+	{		
 		//path name:
 		EditorGUILayout.BeginHorizontal();
 		EditorGUILayout.PrefixLabel("Path Name");
@@ -49,8 +51,10 @@ public class iTweenPathEditor : Editor
 		EditorGUILayout.EndHorizontal();
 		
 		//add node?
-		if(_target.nodeCount > _target.nodes.Count){
-			for (int i = 0; i < _target.nodeCount - _target.nodes.Count; i++) {
+		if(_target.nodeCount > _target.nodes.Count)
+		{
+			for (int i = 0; i < _target.nodeCount - _target.nodes.Count; i++)
+			{
 				_target.nodes.Add(Vector3.zero);	
 			}
 		}
@@ -76,21 +80,36 @@ public class iTweenPathEditor : Editor
 			EditorUtility.SetDirty(_target);			
 		}
 	}
-	
-	void OnSceneGUI(){
-		if(_target.enabled) { // dkoontz
-			if(_target.nodes.Count > 0){
+
+	void OnSceneGUI()
+	{
+		if (_target.enabled)
+		{ // dkoontz
+			if (_target.nodes.Count > 0)
+			{
 				//allow path adjustment undo:
-				Undo.SetSnapshotTarget(_target,"Adjust iTween Path");
-				
+				Undo.RecordObject(_target, "Adjust iTween Path");
+
+				// start arclee
+				//parent.
+				Handles.Label(_target.transform.position, "'" + _target.pathName + "' Parent", style);
+
 				//path begin and end labels:
-				Handles.Label(_target.nodes[0], "'" + _target.pathName + "' Begin", style);
-				Handles.Label(_target.nodes[_target.nodes.Count-1], "'" + _target.pathName + "' End", style);
-				
+				Vector3 labb = _target.transform.TransformPoint(_target.nodes[0]);
+				Vector3 labe = _target.transform.TransformPoint(_target.nodes[_target.nodes.Count - 1]);
+				Handles.Label(labb, "'" + _target.pathName + "' Begin", style);
+				Handles.Label(labe, "'" + _target.pathName + "' End", style);
+
 				//node handle display:
-				for (int i = 0; i < _target.nodes.Count; i++) {
-					_target.nodes[i] = Handles.PositionHandle(_target.nodes[i], Quaternion.identity);
-				}	
+				for (int i = 0; i < _target.nodes.Count; i++)
+				{
+					Vector3 fp = _target.transform.TransformPoint(_target.nodes[i]);
+					//_target.nodes[i] = Handles.PositionHandle(fp, _target.transform.rotation);
+
+					Vector3 ivp = Handles.PositionHandle(fp, _target.transform.rotation);
+					_target.nodes[i] = _target.transform.InverseTransformPoint(ivp);
+				}
+				// end arclee
 			}
 		} // dkoontz
 	}

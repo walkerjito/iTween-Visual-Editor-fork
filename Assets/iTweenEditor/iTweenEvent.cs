@@ -133,8 +133,9 @@ public class iTweenEvent : MonoBehaviour{
 	[SerializeField]
 	bool[] bools;
 	
+	//by arclee
 	[SerializeField]
-	string[] strings;
+	public string[] strings;
 	
 	[SerializeField]
 	Vector3[] vector3s;
@@ -169,8 +170,9 @@ public class iTweenEvent : MonoBehaviour{
 	[SerializeField]
 	ArrayIndexes[] transformArrays;
 	
+	//fix by arclee
 	[SerializeField]
-	iTweenPath[] paths;
+	public iTweenPath[] paths;
 	
 	Dictionary<string, object> values;
 	bool stopped;
@@ -209,8 +211,14 @@ public class iTweenEvent : MonoBehaviour{
 		
 		var optionsHash = new Hashtable();
 		foreach(var pair in Values) {
-			if("path" == pair.Key && pair.Value.GetType() == typeof(string)) optionsHash.Add(pair.Key, iTweenPath.GetPath((string)pair.Value));
-			else optionsHash.Add(pair.Key, pair.Value);
+			if ("path" == pair.Key && pair.Value.GetType() == typeof(string))
+			{
+				optionsHash.Add(pair.Key, iTweenPath.GetPath((string)pair.Value));
+			}
+			else
+			{
+				optionsHash.Add(pair.Key, pair.Value);
+			}
 		}
 		
 		// We use the internalName to have a unique identifier to stop the tween

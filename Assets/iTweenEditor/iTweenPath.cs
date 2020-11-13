@@ -19,17 +19,37 @@ public class iTweenPath : MonoBehaviour
 	
 	void OnDrawGizmosSelected(){
 		if(enabled) { // dkoontz
-			if(nodes.Count > 0){
-				iTween.DrawPath(nodes.ToArray(), pathColor);
+			// fixed by arclee
+			if (nodes.Count > 0)
+			{
+				List<Vector3> li = new List<Vector3>();
+				for (int i = 0; i < nodes.Count; i++)
+				{
+					Vector3 v3 = transform.TransformPoint(nodes[i]);
+					li.Add(v3);
+				}
+				//iTween.DrawPath(nodes.ToArray(), pathColor);
+				iTween.DrawPath(li.ToArray(), pathColor);
+
 			}
+			// fixed by arclee
 		} // dkoontz
 	}
 	
 	public static Vector3[] GetPath(string requestedName){
 		requestedName = requestedName.ToLower();
-		if(paths.ContainsKey(requestedName)){
-			return paths[requestedName].nodes.ToArray();
-		}else{
+		if (paths.ContainsKey(requestedName))
+		{
+			List<Vector3> outlist = new List<Vector3>();
+			for (int i = 0; i < paths[requestedName].nodes.Count; i++)
+			{
+				Vector3 newval = paths[requestedName].transform.TransformPoint(paths[requestedName].nodes[i]);
+				outlist.Add(newval);
+			}
+			//return paths[requestedName].nodes.ToArray();
+			return outlist.ToArray();
+		}
+		else{
 			Debug.Log("No path with that name exists! Are you sure you wrote it correctly?");
 			return null;
 		}
