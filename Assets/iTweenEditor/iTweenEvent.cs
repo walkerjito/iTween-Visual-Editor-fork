@@ -30,7 +30,7 @@ public class ArrayIndexes {
 }
 
 public class iTweenEvent : MonoBehaviour{
-	public const string VERSION = "0.6.1";
+	public const string VERSION = "0.6.3";
 	
 	public enum TweenType {
 		AudioFrom,

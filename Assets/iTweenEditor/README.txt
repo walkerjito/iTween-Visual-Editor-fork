@@ -4,6 +4,10 @@ After installation, if you have a Javascript based project it is highly recommen
 
 Release History ===============
 
+0.6.3 ====
+
+fixing iTweenPathEditor to use UIElement.
+
 0.6.2 ====
 
 fix old GUITexture and GUIText library to UI.Image and UI.Text.
